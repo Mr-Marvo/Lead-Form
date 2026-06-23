@@ -37,6 +37,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+interface Lead {
+  _id: string;
+  _creationTime: number;
+  fullName: string;
+  email: string;
+  contactNumber: string;
+  whatsAppNumber: string;
+  requirement?: string;
+}
+
 const PIN_SESSION_KEY = "evoto_admin_authenticated";
 
 export default function AdminDashboard() {
@@ -44,7 +54,7 @@ export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pinInput, setPinInput] = useState("");
   const [pinError, setPinError] = useState("");
-  const [selectedLead, setSelectedLead] = useState<any>(null);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isCopied, setIsCopied] = useState(false);
 
   // Check PIN from env or default
@@ -80,7 +90,7 @@ export default function AdminDashboard() {
     if (!leads || leads.length === 0) return;
 
     const headers = ["Full Name", "Email Address", "Contact Number", "WhatsApp Number", "Requirement Description", "Submission Date"];
-    const rows = leads.map(lead => [
+    const rows = leads.map((lead: Lead) => [
       lead.fullName,
       lead.email,
       lead.contactNumber,
@@ -90,7 +100,7 @@ export default function AdminDashboard() {
     ]);
 
     const csvContent = "data:text/csv;charset=utf-8," 
-      + [headers.join(","), ...rows.map(e => e.map(val => `"${val.replace(/"/g, '""')}"`).join(","))].join("\n");
+      + [headers.join(","), ...rows.map((e: string[]) => e.map((val: string) => `"${val.replace(/"/g, '""')}"`).join(","))].join("\n");
 
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
@@ -105,7 +115,7 @@ export default function AdminDashboard() {
   const handleCopyClipboard = () => {
     if (!leads || leads.length === 0) return;
 
-    const text = leads.map(lead => 
+    const text = leads.map((lead: Lead) => 
       `Name: ${lead.fullName}\nEmail: ${lead.email}\nPhone: ${lead.contactNumber}\nWhatsApp: ${lead.whatsAppNumber}\nRequirement: ${lead.requirement || "None"}\n---`
     ).join("\n\n");
 
@@ -221,7 +231,7 @@ export default function AdminDashboard() {
             <div>
               <span className="text-sm font-medium text-zinc-500">Today's Leads</span>
               <h3 className="text-2xl font-bold text-zinc-900 mt-0.5">
-                {leads ? leads.filter(l => new Date(l._creationTime).toDateString() === new Date().toDateString()).length : 0}
+                {leads ? leads.filter((l: Lead) => new Date(l._creationTime).toDateString() === new Date().toDateString()).length : 0}
               </h3>
             </div>
           </div>
@@ -301,7 +311,7 @@ export default function AdminDashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {leads.map((lead) => (
+                  {leads.map((lead: Lead) => (
                     <TableRow key={lead._id} className="hover:bg-zinc-50/50">
                       <TableCell className="font-semibold text-zinc-950">{lead.fullName}</TableCell>
                       <TableCell className="text-zinc-600">{lead.email}</TableCell>
