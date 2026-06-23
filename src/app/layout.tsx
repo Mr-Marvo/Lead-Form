@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Evoto Leads - Lead Collection Kiosk",
   description: "Responsive tablet kiosk application for lead capture at exhibitions.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

@@ -4,18 +4,18 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { 
-  Lock, 
-  Download, 
-  Copy, 
-  ExternalLink, 
-  Eye, 
+import {
+  Lock,
+  Download,
+  Copy,
+  ExternalLink,
+  Eye,
   Database,
   Users,
   Calendar,
   Check,
   LogOut,
-  ChevronRight
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,7 +58,7 @@ export default function AdminDashboard() {
   const [isCopied, setIsCopied] = useState(false);
 
   // Check PIN from env or default
-  const correctPin = process.env.NEXT_PUBLIC_ADMIN_PIN || "2026";
+  const correctPin = process.env.NEXT_PUBLIC_ADMIN_PIN;
 
   useEffect(() => {
     const saved = sessionStorage.getItem(PIN_SESSION_KEY);
@@ -89,7 +89,14 @@ export default function AdminDashboard() {
   const handleExportCSV = () => {
     if (!leads || leads.length === 0) return;
 
-    const headers = ["Full Name", "Email Address", "Contact Number", "WhatsApp Number", "Requirement Description", "Submission Date"];
+    const headers = [
+      "Full Name",
+      "Email Address",
+      "Contact Number",
+      "WhatsApp Number",
+      "Requirement Description",
+      "Submission Date",
+    ];
     const rows = leads.map((lead: Lead) => [
       lead.fullName,
       lead.email,
@@ -99,13 +106,22 @@ export default function AdminDashboard() {
       new Date(lead._creationTime).toLocaleString(),
     ]);
 
-    const csvContent = "data:text/csv;charset=utf-8," 
-      + [headers.join(","), ...rows.map((e: string[]) => e.map((val: string) => `"${val.replace(/"/g, '""')}"`).join(","))].join("\n");
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [
+        headers.join(","),
+        ...rows.map((e: string[]) =>
+          e.map((val: string) => `"${val.replace(/"/g, '""')}"`).join(","),
+        ),
+      ].join("\n");
 
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `evoto_leads_${new Date().toISOString().slice(0,10)}.csv`);
+    link.setAttribute(
+      "download",
+      `evoto_leads_${new Date().toISOString().slice(0, 10)}.csv`,
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -115,9 +131,12 @@ export default function AdminDashboard() {
   const handleCopyClipboard = () => {
     if (!leads || leads.length === 0) return;
 
-    const text = leads.map((lead: Lead) => 
-      `Name: ${lead.fullName}\nEmail: ${lead.email}\nPhone: ${lead.contactNumber}\nWhatsApp: ${lead.whatsAppNumber}\nRequirement: ${lead.requirement || "None"}\n---`
-    ).join("\n\n");
+    const text = leads
+      .map(
+        (lead: Lead) =>
+          `Name: ${lead.fullName}\nEmail: ${lead.email}\nPhone: ${lead.contactNumber}\nWhatsApp: ${lead.whatsAppNumber}\nRequirement: ${lead.requirement || "None"}\n---`,
+      )
+      .join("\n\n");
 
     navigator.clipboard.writeText(text);
     setIsCopied(true);
@@ -136,14 +155,21 @@ export default function AdminDashboard() {
             <div className="mx-auto w-16 h-16 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-center mb-4">
               <Lock className="h-6 w-6 text-zinc-400" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">Staff Authentication</h1>
-            <p className="text-sm text-zinc-500 mt-1">Please enter your kiosk dashboard security PIN</p>
+            <h1 className="text-2xl font-bold tracking-tight">
+              Staff Authentication
+            </h1>
+            <p className="text-sm text-zinc-500 mt-1">
+              Please enter your kiosk dashboard security PIN
+            </p>
           </div>
 
           <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-2xl">
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="pin" className="text-sm font-medium text-zinc-400">
+                <Label
+                  htmlFor="pin"
+                  className="text-sm font-medium text-zinc-400"
+                >
                   Security PIN Code
                 </Label>
                 <Input
@@ -157,7 +183,9 @@ export default function AdminDashboard() {
                   autoFocus
                 />
                 {pinError && (
-                  <p className="text-xs font-semibold text-rose-500 text-center mt-1">{pinError}</p>
+                  <p className="text-xs font-semibold text-rose-500 text-center mt-1">
+                    {pinError}
+                  </p>
                 )}
               </div>
 
@@ -177,7 +205,6 @@ export default function AdminDashboard() {
   // 2. Main Admin Dashboard View
   return (
     <div className="flex flex-1 flex-col min-h-screen bg-zinc-50">
-      
       {/* Top Navigation */}
       <header className="bg-white border-b border-zinc-200 py-4 px-6 sm:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -192,14 +219,18 @@ export default function AdminDashboard() {
               />
             </div>
             <div className="border-l border-zinc-200 pl-4">
-              <h1 className="text-lg font-bold text-zinc-900 leading-none">Evoto Leads</h1>
-              <p className="text-[10px] text-zinc-400 font-medium mt-1">Exhibition Admin Console</p>
+              <h1 className="text-lg font-bold text-zinc-900 leading-none">
+                Evoto Leads
+              </h1>
+              <p className="text-[10px] text-zinc-400 font-medium mt-1">
+                Exhibition Admin Console
+              </p>
             </div>
           </div>
-          
-          <Button 
+
+          <Button
             onClick={handleLogout}
-            variant="outline" 
+            variant="outline"
             size="sm"
             className="text-zinc-600 border-zinc-200 hover:bg-zinc-100 hover:text-zinc-900 rounded-lg"
           >
@@ -211,7 +242,6 @@ export default function AdminDashboard() {
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto py-8 px-6 sm:px-8 space-y-6">
-        
         {/* Metric Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm flex items-center space-x-4">
@@ -219,8 +249,12 @@ export default function AdminDashboard() {
               <Users className="h-6 w-6" />
             </div>
             <div>
-              <span className="text-sm font-medium text-zinc-500">Total Leads Collected</span>
-              <h3 className="text-2xl font-bold text-zinc-900 mt-0.5">{leads?.length ?? 0}</h3>
+              <span className="text-sm font-medium text-zinc-500">
+                Total Leads Collected
+              </span>
+              <h3 className="text-2xl font-bold text-zinc-900 mt-0.5">
+                {leads?.length ?? 0}
+              </h3>
             </div>
           </div>
 
@@ -229,9 +263,17 @@ export default function AdminDashboard() {
               <Calendar className="h-6 w-6" />
             </div>
             <div>
-              <span className="text-sm font-medium text-zinc-500">Today's Leads</span>
+              <span className="text-sm font-medium text-zinc-500">
+                Today's Leads
+              </span>
               <h3 className="text-2xl font-bold text-zinc-900 mt-0.5">
-                {leads ? leads.filter((l: Lead) => new Date(l._creationTime).toDateString() === new Date().toDateString()).length : 0}
+                {leads
+                  ? leads.filter(
+                      (l: Lead) =>
+                        new Date(l._creationTime).toDateString() ===
+                        new Date().toDateString(),
+                    ).length
+                  : 0}
               </h3>
             </div>
           </div>
@@ -241,7 +283,9 @@ export default function AdminDashboard() {
               <Database className="h-6 w-6" />
             </div>
             <div>
-              <span className="text-sm font-medium text-zinc-500">Database Connection</span>
+              <span className="text-sm font-medium text-zinc-500">
+                Database Connection
+              </span>
               <h3 className="text-sm font-bold text-emerald-600 mt-1 flex items-center">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 inline-block mr-1.5 animate-pulse"></span>
                 Convex Cloud Connected
@@ -255,11 +299,13 @@ export default function AdminDashboard() {
           <div className="px-6 py-5 border-b border-zinc-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h2 className="text-lg font-bold text-zinc-900">Leads List</h2>
-              <p className="text-xs text-zinc-500 mt-0.5">Showing all submission records</p>
+              <p className="text-xs text-zinc-500 mt-0.5">
+                Showing all submission records
+              </p>
             </div>
 
             <div className="flex items-center space-x-3">
-              <Button 
+              <Button
                 onClick={handleCopyClipboard}
                 disabled={!leads || leads.length === 0}
                 variant="outline"
@@ -277,7 +323,7 @@ export default function AdminDashboard() {
                   </>
                 )}
               </Button>
-              <Button 
+              <Button
                 onClick={handleExportCSV}
                 disabled={!leads || leads.length === 0}
                 className="bg-zinc-950 hover:bg-zinc-800 text-white h-10 px-4 rounded-xl text-sm"
@@ -296,27 +342,48 @@ export default function AdminDashboard() {
               </div>
             ) : leads.length === 0 ? (
               <div className="py-20 text-center text-zinc-400 font-medium">
-                No lead records found. Use the kiosk at root route to capture submissions!
+                No lead records found. Use the kiosk at root route to capture
+                submissions!
               </div>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent bg-zinc-50/50">
-                    <TableHead className="font-bold text-zinc-700">Full Name</TableHead>
-                    <TableHead className="font-bold text-zinc-700">Email</TableHead>
-                    <TableHead className="font-bold text-zinc-700">Contact</TableHead>
-                    <TableHead className="font-bold text-zinc-700">WhatsApp</TableHead>
-                    <TableHead className="font-bold text-zinc-700">Date Collected</TableHead>
-                    <TableHead className="font-bold text-zinc-700 text-right">Action</TableHead>
+                    <TableHead className="font-bold text-zinc-700">
+                      Full Name
+                    </TableHead>
+                    <TableHead className="font-bold text-zinc-700">
+                      Email
+                    </TableHead>
+                    <TableHead className="font-bold text-zinc-700">
+                      Contact
+                    </TableHead>
+                    <TableHead className="font-bold text-zinc-700">
+                      WhatsApp
+                    </TableHead>
+                    <TableHead className="font-bold text-zinc-700">
+                      Date Collected
+                    </TableHead>
+                    <TableHead className="font-bold text-zinc-700 text-right">
+                      Action
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {leads.map((lead: Lead) => (
                     <TableRow key={lead._id} className="hover:bg-zinc-50/50">
-                      <TableCell className="font-semibold text-zinc-950">{lead.fullName}</TableCell>
-                      <TableCell className="text-zinc-600">{lead.email}</TableCell>
-                      <TableCell className="text-zinc-600 font-mono text-sm">{lead.contactNumber}</TableCell>
-                      <TableCell className="text-zinc-600 font-mono text-sm">{lead.whatsAppNumber}</TableCell>
+                      <TableCell className="font-semibold text-zinc-950">
+                        {lead.fullName}
+                      </TableCell>
+                      <TableCell className="text-zinc-600">
+                        {lead.email}
+                      </TableCell>
+                      <TableCell className="text-zinc-600 font-mono text-sm">
+                        {lead.contactNumber}
+                      </TableCell>
+                      <TableCell className="text-zinc-600 font-mono text-sm">
+                        {lead.whatsAppNumber}
+                      </TableCell>
                       <TableCell className="text-zinc-500 text-sm">
                         {new Date(lead._creationTime).toLocaleString()}
                       </TableCell>
@@ -324,10 +391,10 @@ export default function AdminDashboard() {
                         <Dialog>
                           <DialogTrigger
                             render={
-                              <Button 
+                              <Button
                                 onClick={() => setSelectedLead(lead)}
-                                variant="ghost" 
-                                size="sm" 
+                                variant="ghost"
+                                size="sm"
                                 className="text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 rounded-lg px-2"
                               />
                             }
@@ -341,39 +408,59 @@ export default function AdminDashboard() {
                                 {selectedLead?.fullName}
                               </DialogTitle>
                               <DialogDescription className="text-xs text-zinc-500">
-                                Submitted on {selectedLead && new Date(selectedLead._creationTime).toLocaleString()}
+                                Submitted on{" "}
+                                {selectedLead &&
+                                  new Date(
+                                    selectedLead._creationTime,
+                                  ).toLocaleString()}
                               </DialogDescription>
                             </DialogHeader>
                             <div className="space-y-4 py-4 border-t border-b border-zinc-100 my-2">
                               <div className="grid grid-cols-2 gap-4 text-sm">
                                 <div>
-                                  <span className="text-xs text-zinc-400 font-medium block">Email Address</span>
-                                  <span className="font-semibold text-zinc-900 block truncate">{selectedLead?.email}</span>
+                                  <span className="text-xs text-zinc-400 font-medium block">
+                                    Email Address
+                                  </span>
+                                  <span className="font-semibold text-zinc-900 block truncate">
+                                    {selectedLead?.email}
+                                  </span>
                                 </div>
                                 <div>
-                                  <span className="text-xs text-zinc-400 font-medium block">Contact Number</span>
-                                  <span className="font-semibold text-zinc-900 block font-mono">{selectedLead?.contactNumber}</span>
+                                  <span className="text-xs text-zinc-400 font-medium block">
+                                    Contact Number
+                                  </span>
+                                  <span className="font-semibold text-zinc-900 block font-mono">
+                                    {selectedLead?.contactNumber}
+                                  </span>
                                 </div>
                                 <div>
-                                  <span className="text-xs text-zinc-400 font-medium block">WhatsApp Number</span>
-                                  <span className="font-semibold text-zinc-900 block font-mono">{selectedLead?.whatsAppNumber}</span>
+                                  <span className="text-xs text-zinc-400 font-medium block">
+                                    WhatsApp Number
+                                  </span>
+                                  <span className="font-semibold text-zinc-900 block font-mono">
+                                    {selectedLead?.whatsAppNumber}
+                                  </span>
                                 </div>
                               </div>
                               <div className="pt-2">
-                                <span className="text-xs text-zinc-400 font-medium block mb-1">Requirement Description</span>
+                                <span className="text-xs text-zinc-400 font-medium block mb-1">
+                                  Requirement Description
+                                </span>
                                 <div className="bg-zinc-50 border border-zinc-150 rounded-xl p-4 text-sm text-zinc-700 max-h-[200px] overflow-y-auto whitespace-pre-wrap leading-relaxed">
                                   {selectedLead?.requirement || (
-                                    <span className="italic text-zinc-400">No requirements specified by user.</span>
+                                    <span className="italic text-zinc-400">
+                                      No requirements specified by user.
+                                    </span>
                                   )}
                                 </div>
                               </div>
                             </div>
                             <div className="flex justify-end pt-2">
-                              <Button 
+                              <Button
                                 onClick={() => {
                                   if (selectedLead) {
                                     navigator.clipboard.writeText(
-                                      `Name: ${selectedLead.fullName}\nEmail: ${selectedLead.email}\nPhone: ${selectedLead.contactNumber}\nWhatsApp: ${selectedLead.whatsAppNumber}\nRequirement: ${selectedLead.requirement || "None"}`
+                                      `Name: ${selectedLead.fullName}\nEmail: ${selectedLead.email}\nPhone: ${selectedLead.contactNumber}\nWhatsApp: ${selectedLead.whatsAppNumber}\nRequirement: ${selectedLead.requirement || "None"}`,
                                     );
                                     alert("Details copied to clipboard!");
                                   }
@@ -393,7 +480,6 @@ export default function AdminDashboard() {
             )}
           </div>
         </div>
-
       </main>
     </div>
   );
