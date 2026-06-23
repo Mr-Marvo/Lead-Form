@@ -8,15 +8,15 @@ import * as z from "zod";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import confetti from "canvas-confetti";
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  MessageSquare, 
-  CheckCircle, 
-  ChevronRight, 
+import {
+  User,
+  Mail,
+  Phone,
+  MessageSquare,
+  CheckCircle,
+  ChevronRight,
   Sparkles,
-  Loader2 
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,13 +28,15 @@ import { Textarea } from "@/components/ui/textarea";
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  contactNumber: z.string()
+  contactNumber: z
+    .string()
     .regex(/^\d+$/, "Contact number must contain only numbers")
     .startsWith("0", "Contact number must start with 0")
     .max(10, "Contact number must be at most 10 digits")
     .min(9, "Contact number must be at least 9 digits"),
   isWhatsAppSame: z.boolean(),
-  whatsAppNumber: z.string()
+  whatsAppNumber: z
+    .string()
     .regex(/^\d+$/, "WhatsApp number must contain only numbers")
     .startsWith("07", "WhatsApp number must start with 07")
     .max(10, "WhatsApp number must be at most 10 digits")
@@ -106,7 +108,7 @@ export default function LeadKioskPage() {
       confetti({
         particleCount: 150,
         spread: 80,
-        origin: { y: 0.6 }
+        origin: { y: 0.6 },
       });
 
       setIsSubmitted(true);
@@ -130,18 +132,19 @@ export default function LeadKioskPage() {
         {/* Decorative background grid and glow */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f0f11_1px,transparent_1px),linear-gradient(to_bottom,#0f0f11_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-40"></div>
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-        
+
         <div className="max-w-xl w-full text-center z-10 flex flex-col items-center animate-in fade-in zoom-in-95 duration-500">
           <div className="relative mb-8">
             <div className="absolute inset-0 rounded-full bg-emerald-500/20 blur-md scale-110 animate-pulse"></div>
             <CheckCircle className="h-24 w-24 text-emerald-400 relative z-10 animate-bounce" />
           </div>
-          
+
           <h1 className="text-4xl font-extrabold tracking-tight mb-4 sm:text-5xl bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200 bg-clip-text text-transparent">
             Thank You!
           </h1>
           <p className="text-lg text-zinc-400 mb-8 max-w-md">
-            Your details have been successfully recorded. One of our specialists will be in touch shortly to assist you.
+            Your details have been successfully recorded. One of our specialists
+            will be in touch shortly to assist you.
           </p>
 
           <div className="bg-zinc-900/60 backdrop-blur-md border border-zinc-800 rounded-2xl p-6 mb-8 w-full max-w-sm">
@@ -149,19 +152,20 @@ export default function LeadKioskPage() {
               Next Visitor
             </span>
             <div className="text-3xl font-bold font-mono tracking-tight text-emerald-400">
-              Form resets in <span className="text-white text-4xl">{countdown}</span>s
+              Form resets in{" "}
+              <span className="text-white text-4xl">{countdown}</span>s
             </div>
             <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden mt-4">
-              <div 
+              <div
                 className="bg-emerald-500 h-full transition-all duration-1000 ease-linear"
                 style={{ width: `${(countdown / 5) * 100}%` }}
               ></div>
             </div>
           </div>
 
-          <Button 
-            onClick={handleReset} 
-            size="lg" 
+          <Button
+            onClick={handleReset}
+            size="lg"
             className="bg-white hover:bg-zinc-200 text-black px-8 py-6 rounded-full text-lg font-semibold shadow-lg shadow-white/5 group transition-transform hover:scale-105 active:scale-95"
           >
             Reset Form Now
@@ -179,7 +183,6 @@ export default function LeadKioskPage() {
       <div className="absolute bottom-0 left-0 w-[40vw] h-[40vh] bg-zinc-200/50 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="max-w-5xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-10">
-        
         {/* Left Column - Kiosk Branding */}
         <div className="lg:col-span-5 flex flex-col space-y-6 text-left p-4 lg:p-0">
           <div className="relative w-36 h-12 mb-2 select-none pointer-events-none">
@@ -202,16 +205,21 @@ export default function LeadKioskPage() {
             </span>
           </h1>
           <p className="text-lg text-zinc-600 max-w-md">
-            Leave your contact information and requirement description, and our consultants will coordinate with you.
+            Leave your contact information and requirement description, and our
+            consultants will coordinate with you.
           </p>
           <div className="hidden lg:flex flex-col space-y-4 pt-4 border-t border-zinc-200">
             <div className="flex items-center space-x-3 text-zinc-500">
               <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
-              <span className="text-sm font-medium">Secured Lead Processing</span>
+              <span className="text-sm font-medium">
+                Secured Lead Processing
+              </span>
             </div>
             <div className="flex items-center space-x-3 text-zinc-500">
               <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
-              <span className="text-sm font-medium">Real-time Admin Synchronized</span>
+              <span className="text-sm font-medium">
+                Real-time Admin Synchronized
+              </span>
             </div>
           </div>
         </div>
@@ -220,10 +228,12 @@ export default function LeadKioskPage() {
         <div className="lg:col-span-7">
           <div className="bg-white border border-zinc-200 shadow-2xl rounded-3xl p-6 sm:p-10 transition-shadow">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              
               {/* Full Name */}
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-sm font-semibold text-zinc-700 flex items-center">
+                <Label
+                  htmlFor="fullName"
+                  className="text-sm font-semibold text-zinc-700 flex items-center"
+                >
                   <User className="h-4 w-4 text-zinc-400 mr-2" />
                   Full Name <span className="text-destructive ml-0.5">*</span>
                 </Label>
@@ -234,15 +244,21 @@ export default function LeadKioskPage() {
                   {...register("fullName")}
                 />
                 {errors.fullName && (
-                  <p className="text-xs font-semibold text-destructive mt-1">{errors.fullName.message}</p>
+                  <p className="text-xs font-semibold text-destructive mt-1">
+                    {errors.fullName.message}
+                  </p>
                 )}
               </div>
 
               {/* Email Address */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-semibold text-zinc-700 flex items-center">
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-semibold text-zinc-700 flex items-center"
+                >
                   <Mail className="h-4 w-4 text-zinc-400 mr-2" />
-                  Email Address <span className="text-destructive ml-0.5">*</span>
+                  Email Address{" "}
+                  <span className="text-destructive ml-0.5">*</span>
                 </Label>
                 <Input
                   id="email"
@@ -252,46 +268,60 @@ export default function LeadKioskPage() {
                   {...register("email")}
                 />
                 {errors.email && (
-                  <p className="text-xs font-semibold text-destructive mt-1">{errors.email.message}</p>
+                  <p className="text-xs font-semibold text-destructive mt-1">
+                    {errors.email.message}
+                  </p>
                 )}
               </div>
 
               {/* Contact Number */}
               <div className="space-y-2">
-                <Label htmlFor="contactNumber" className="text-sm font-semibold text-zinc-700 flex items-center">
+                <Label
+                  htmlFor="contactNumber"
+                  className="text-sm font-semibold text-zinc-700 flex items-center"
+                >
                   <Phone className="h-4 w-4 text-zinc-400 mr-2" />
-                  Contact Number <span className="text-destructive ml-0.5">*</span>
+                  Contact Number{" "}
+                  <span className="text-destructive ml-0.5">*</span>
                 </Label>
                 <Input
                   id="contactNumber"
                   type="tel"
-                  placeholder="e.g. +1 555-0199"
+                  placeholder="e.g. 0771234567"
                   className={`h-14 text-base px-4 rounded-xl border-zinc-200 focus-visible:ring-zinc-900 ${errors.contactNumber ? "border-destructive focus-visible:ring-destructive" : ""}`}
                   {...register("contactNumber")}
                 />
                 {errors.contactNumber && (
-                  <p className="text-xs font-semibold text-destructive mt-1">{errors.contactNumber.message}</p>
+                  <p className="text-xs font-semibold text-destructive mt-1">
+                    {errors.contactNumber.message}
+                  </p>
                 )}
               </div>
 
               {/* WhatsApp Number */}
               <div className="space-y-2 relative">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="whatsAppNumber" className="text-sm font-semibold text-zinc-700 flex items-center">
+                  <Label
+                    htmlFor="whatsAppNumber"
+                    className="text-sm font-semibold text-zinc-700 flex items-center"
+                  >
                     <Phone className="h-4 w-4 text-zinc-400 mr-2" />
-                    WhatsApp Number <span className="text-destructive ml-0.5">*</span>
+                    WhatsApp Number{" "}
+                    <span className="text-destructive ml-0.5">*</span>
                   </Label>
-                  
+
                   {/* Touch friendly same checkbox overlayed in label */}
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="isWhatsAppSame"
                       className="h-5 w-5 border-zinc-300 rounded"
                       checked={watchIsWhatsAppSame}
-                      onCheckedChange={(checked) => setValue("isWhatsAppSame", checked === true)}
+                      onCheckedChange={(checked) =>
+                        setValue("isWhatsAppSame", checked === true)
+                      }
                     />
-                    <Label 
-                      htmlFor="isWhatsAppSame" 
+                    <Label
+                      htmlFor="isWhatsAppSame"
                       className="text-xs text-zinc-500 font-medium cursor-pointer select-none py-1"
                     >
                       Same as contact
@@ -301,21 +331,33 @@ export default function LeadKioskPage() {
                 <Input
                   id="whatsAppNumber"
                   type="tel"
-                  placeholder={watchIsWhatsAppSame ? "Same as Contact Number" : "e.g. +1 555-0199"}
+                  placeholder={
+                    watchIsWhatsAppSame
+                      ? "Same as Contact Number"
+                      : "e.g. 0771234567"
+                  }
                   readOnly={watchIsWhatsAppSame}
                   className={`h-14 text-base px-4 rounded-xl border-zinc-200 focus-visible:ring-zinc-900 ${watchIsWhatsAppSame ? "bg-zinc-50 text-zinc-500 border-zinc-200 cursor-not-allowed select-none" : ""} ${errors.whatsAppNumber && !watchIsWhatsAppSame ? "border-destructive focus-visible:ring-destructive" : ""}`}
                   {...register("whatsAppNumber")}
                 />
                 {errors.whatsAppNumber && !watchIsWhatsAppSame && (
-                  <p className="text-xs font-semibold text-destructive mt-1">{errors.whatsAppNumber.message}</p>
+                  <p className="text-xs font-semibold text-destructive mt-1">
+                    {errors.whatsAppNumber.message}
+                  </p>
                 )}
               </div>
 
               {/* Requirement Description */}
               <div className="space-y-2">
-                <Label htmlFor="requirement" className="text-sm font-semibold text-zinc-700 flex items-center">
+                <Label
+                  htmlFor="requirement"
+                  className="text-sm font-semibold text-zinc-700 flex items-center"
+                >
                   <MessageSquare className="h-4 w-4 text-zinc-400 mr-2" />
-                  Requirement Description <span className="text-zinc-400 font-normal ml-1">(Optional)</span>
+                  Requirement Description{" "}
+                  <span className="text-zinc-400 font-normal ml-1">
+                    (Optional)
+                  </span>
                 </Label>
                 <Textarea
                   id="requirement"
@@ -341,11 +383,9 @@ export default function LeadKioskPage() {
                   "Submit Lead Details"
                 )}
               </Button>
-
             </form>
           </div>
         </div>
-
       </div>
     </div>
   );
